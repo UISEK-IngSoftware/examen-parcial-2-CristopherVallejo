@@ -15,8 +15,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('movies.urls')), # Your main movie app at the root
+    path('api/', include('api.urls')), # Your API at /api/
+    
+    # --- ADD THIS LINE FOR DJANGO AUTHENTICATION URLS ---
+    path('accounts/', include('django.contrib.auth.urls')), # This includes 'login', 'logout', 'password_change', etc.
+    # ----------------------------------------------------
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}My movie collection{% endblock title %}
+
+{% block content %}
+        <p><strong>Id:</strong> {{ movie.Id }}</p>
+        <p class="p-2">Has elegido la película: <strong>{{ movie.name }}</strong></p>
+        <ul>
+            <li><strong>Género:</strong> {{ movie.genre }}</li>
+            <li><strong>Director:</strong> {{ movie.director }}</li>
+            <li><strong>Año:</strong> {{ movie.year }}</li>
+            <li><strong>Sinopsis:</strong> {{ movie.synopsis }}</li>
+        </ul>
+        <img src="{{ movie.picture.url }}" alt="{{ movie.name }}" class="card-img-top">
+{% endblock content %}

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'movies',  # Custom app for managing movies
 ]
 
 MIDDLEWARE = [
@@ -117,7 +118,15 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+# Directory where uploaded files will be stored
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField' 
+
+# Login URL
+LOGIN_REDIRECT_URL = 'movies:index'  # Redirect to the index page after login
+LOGOUT_REDIRECT_URL = 'movies:index'  # Redirect to the index page after logout
+LOGIN_URL = 'movies:login'  # Redirect to the login page if not authenticated

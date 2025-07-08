@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %} {# Make sure you have this at the top to use static files for placeholders #}
+
+{% block title %}My movie collection{% endblock title %}
+
+{% block content %}
+<p class="p-2">Hello, welcome to my movie collection with Django</p>
+
+{# Removed the ul.list-group wrapper around the row, as it's not standard Bootstrap grid usage #}
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"> {# Added responsive columns and gutters #}
+    {% for movie in movies %} 
+        <div class="col"> {# Use 'col' with responsive classes from the row-cols above #}
+             <div class="card h-100 shadow-sm"> {# Added h-100 for uniform card heights #}
+                {# --- THE CRUCIAL FIX IS HERE: CONDITIONAL IMAGE RENDERING --- #}
+                {% if movie.picture %}
+                    <img src="{{ movie.picture.url }}" alt="{{ movie.name }}" class="card-img-top custom-card-img">
+                {% else %}
+                    {# Provide a fallback placeholder image #}
+                    <img src="{% static 'placeholder.png' %}" alt="No image available" class="card-img-top custom-card-img">
+                {% endif %}
+                {# --- END OF CRUCIAL FIX --- #}
+
+                 <div class="card-body d-flex flex-column"> {# Use flexbox to push buttons to the bottom #}
+                    <h5 class="card-title">{{ movie.name }}</h5>
+                    <p class="card-text"><strong>Genre:</strong> {{ movie.genre }}</p>
+                    <p class="card-text"><strong>Director:</strong> {{ movie.director }}</p>
+                    <p class="card-text"><strong>Year:</strong> {{ movie.year }}</p>
+                    <p class="card-text"><strong>Synopsis:</strong> {{ movie.synopsis|truncatechars:150 }}</p> {# Truncate long synopses #}
+                    <p class="card-text"><strong>Id:</strong> {{ movie.Id }}</p> {# Consider removing Id unless it's for debug #}
+
+                    <div class="mt-auto"> {# Group buttons and push them to the bottom #}
+                        <a class="btn btn-primary" href="{% url 'movies:detail' movie.Id %}" role="button"><i class="fa-solid fa-eye"></i> View Details</a>
+                        {% if user.is_authenticated %}
+                            <a class="btn btn-warning" href="{% url 'movies:edit_movie' movie.Id %}" role="button"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                            {# Assuming you have a delete view and URL pattern #}
+                            <a class="btn btn-danger" href="{% url 'movies:delete_movie' movie.Id %}" role="button"><i class="fa-solid fa-trash"></i> Delete</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock content %}
